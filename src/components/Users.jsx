@@ -28,7 +28,9 @@ const Users = ({usersPromise}) => {
         .then(data => {
             console.log('after saving user', data);
             if(data.insertedId){
+                console.log( typeof newUser._id);
                 newUser._id = data.insertedId;
+                
                 const newUsers = [...users, newUser];
                 setUsers(newUsers);
                 alert('users added successfully.');
@@ -40,8 +42,30 @@ const Users = ({usersPromise}) => {
         
 
     }
+    const handleDeleteUser = (id)=>{
+        console.log('Delete a user', id);
+        fetch(`http://localhost:3000/users/${id}`, {
+            method: 'DELETE'
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(`After Delete`, data);
+            if(data.deletedCount){
+                alert('Deleted successfully.');
+                const remainingUsers = users.filter(user => user._id !== id);
+                setUsers(remainingUsers);
+
+            }
+
+        })
+
+
+    }
+
+
     return (
         <div>
+            <h2>{users.length}</h2>
             <form onSubmit={handleAddUser}>
                 <input type="text" name='name' id='' placeholder='Your Name' />
                 <br/>
@@ -53,9 +77,9 @@ const Users = ({usersPromise}) => {
             <br />
             <div>
                 {
-                    users.map(user => <div>
+                    users.map(user => <div key={user._id}>
                         <p>{user.name}: {user.email}</p>
-                        <button>x</button>
+                        <button onClick={()=> handleDeleteUser(user._id)}>x</button>
                     </div>)
                 }
             </div>
