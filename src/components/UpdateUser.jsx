@@ -6,6 +6,7 @@ const UpdateUser = () => {
     console.log(user);
     const handleUpdateUser = (e)=>{
         e.preventDefault();
+        console.log("clicked update button")
         const name = e.target.name.value;
         const email = e.target.email.value;
         console.log(name, email);
@@ -34,7 +35,7 @@ const UpdateUser = () => {
     return (
         <div>
             <h2>Update a User</h2>
-            <form onClick={()=> {handleUpdateUser()}}>
+            <form onSubmit={handleUpdateUser}>
                 <input type="text" name="name" id="" defaultValue={user.name}/>
                 <br />
                 <input type="email" name="email" id="" defaultValue={user.email} />
